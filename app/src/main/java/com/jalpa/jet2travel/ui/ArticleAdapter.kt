@@ -60,7 +60,7 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
         fun bind(article: Article) {
             name.text = article.user.get(0)?.name
             designation.text = article.user.get(0)?.designation
-            time.text = article.date
+            time.text = getFormatedTime(article.date)
             content.text = article.content
 
             if (article.media.size>0) {
@@ -77,8 +77,8 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
                 url.visibility = View.GONE
             }
 
-            likes.text = article.likes.toString() +likes.context.getString(R.string.likes)
-            comments.text = article.commentCount.toString()+comments.context.getString(R.string.comments)
+            likes.text = getFormatedCount(article.likes) +likes.context.getString(R.string.likes)
+            comments.text = getFormatedCount(article.commentCount)+comments.context.getString(R.string.comments)
 
             Glide.with(avtar.context).load(article.user.get(0).avtar)
                 .centerCrop()
