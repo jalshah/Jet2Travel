@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
     private var pageNumber: Int = 0
     private lateinit var progress: ProgressBar
     private lateinit var recyclerView: RecyclerView
+    private lateinit var imageGridAdapter: ArticleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,8 @@ class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
                     pageNumber--
                     findViewById<View>(R.id.empty_msg).visibility = View.VISIBLE
                 }
+                imageGridAdapter = ArticleAdapter(t.articles!!)
+                recyclerView.adapter = imageGridAdapter
             } else {
                 if (t?.articles?.size!! == 0) {
                     pageNumber--

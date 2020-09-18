@@ -5,4 +5,8 @@
     <string name="no_more_items_found">No more items found</string>
     <string name="error_msg">Error fetching response</string>
 
+    <string name="poor_conn">Low network / Network connection lost, cannot load new items </string>
+    <string name="likes">\u0020 Likes</string>
+    <string name="comments">\u0020Comments</string>
+
 </resources>
