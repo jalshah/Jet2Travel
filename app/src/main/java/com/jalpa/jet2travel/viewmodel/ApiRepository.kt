@@ -9,7 +9,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ApiRepository {
-      var articleResponse: MutableLiveData<ArticleResponse> = MutableLiveData()
+    var articleResponse: MutableLiveData<ArticleResponse> = MutableLiveData()
     private var articleApi: ArticleApi
     val limit = 10
     val apiextension="blogs"
