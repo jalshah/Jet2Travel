@@ -17,10 +17,10 @@ class Article : Parcelable {
     lateinit var content:String
 
     @SerializedName("comments")
-    var commentCount: Int = 0
+    var commentCount: Long = 0
 
     @SerializedName("likes")
-    var likes : Int =0
+    var likes : Long =0
 
     @SerializedName("media")
     lateinit var media :List<Media>
@@ -32,16 +32,16 @@ class Article : Parcelable {
         id = parcel.readString().toString()
         date = parcel.readString().toString()
         content = parcel.readString().toString()
-        commentCount = parcel.readInt()
-        likes = parcel.readInt()
+        commentCount = parcel.readLong()
+        likes = parcel.readLong()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(date)
         parcel.writeString(content)
-        parcel.writeInt(commentCount)
-        parcel.writeInt(likes)
+        parcel.writeLong(commentCount)
+        parcel.writeLong(likes)
     }
 
     override fun describeContents(): Int {

@@ -12,8 +12,8 @@ class ArticleViewModel : ViewModel() {
     private val apiRepository: ApiRepository = ApiRepository()
 
 
-    fun loadArticles() : MutableLiveData<ArticleResponse>{
-        apiRepository.fetchArticles(0,"")
+    fun loadArticles(page: Int) : MutableLiveData<ArticleResponse>{
+        apiRepository.fetchArticles(page)
          return  apiRepository.getArticles()
     }
 

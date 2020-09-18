@@ -11,25 +11,22 @@ import retrofit2.Response
 class ApiRepository {
       var articleResponse: MutableLiveData<ArticleResponse> = MutableLiveData()
     private var articleApi: ArticleApi
+    val limit = 10
+    val apiextension="blogs"
 
     constructor(){
         articleApi = RetrofitServiceManager.createService(ArticleApi::class.java)
     }
 
-    fun fetchArticles(number: Int, queryString: String?) {
-        Log.e("fetch","articles called")
-        articleApi.getArticles("blogs",1, 10).enqueue(object : Callback<List<Article>> {
-
+    fun fetchArticles(number: Int) {
+        articleApi.getArticles(apiextension,number, limit).enqueue(object : Callback<List<Article>> {
 
             override fun onFailure(call: Call<List<Article>>, t: Throwable) {
-                Log.e("fetch","articles called"+ t.message)
-
                 articleResponse.value = ArticleResponse(t)
             }
 
 
             override fun onResponse(call: Call<List<Article>>, response: Response<List<Article>>) {
-                Log.e("fetch","articles called"+ articleResponse.hasActiveObservers())
                 if (response.isSuccessful)
                     articleResponse.value =  ArticleResponse(response.body())
             }
