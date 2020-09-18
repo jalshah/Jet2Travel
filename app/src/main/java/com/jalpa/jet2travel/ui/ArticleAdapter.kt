@@ -26,7 +26,11 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
        holder.bind(articles[position])
     }
 
-
+    fun addItems(articles: List<Article>) {
+        var size = this.articles.size
+        this.articles=this.articles.plus(articles)
+        notifyItemRangeInserted(size ,this.articles.size)
+    }
 
     class ArticleViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(inflater.inflate(R.layout.item_layout, parent, false)) {
          var avtar: ShapeableImageView

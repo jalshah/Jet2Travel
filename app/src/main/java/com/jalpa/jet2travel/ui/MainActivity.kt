@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.jalpa.jet2travel.R
 import com.jalpa.jet2travel.network.NetworkManager
 import com.jalpa.jet2travel.viewmodel.ArticleResponse
@@ -34,11 +36,19 @@ class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                    if (isLoading == false  && layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == recyclerView.adapter!!.getItemCount() - 1) {
+                        if (NetworkManager.isNetworkAvailable(this@MainActivity)) {
+                            progress.setVisibility(View.VISIBLE)
+                            recyclerView.isNestedScrollingEnabled = false
+                            loadMore()
+                        } else {
+                            showNetMessage()
+                        }
+                    }
                 }
             })
         }
-
         loadMore()
 
     }
@@ -49,6 +59,12 @@ class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
         viewModelMovieOutputs.loadArticles(++pageNumber).observe(this@MainActivity as LifecycleOwner, this@MainActivity)
     }
 
+    fun showNetMessage() {
+        val mySnackbar: Snackbar = Snackbar.make(findViewById<View>(R.id.constraint_layout),
+            R.string.poor_conn,
+            Snackbar.LENGTH_LONG)
+        mySnackbar.show()
+    }
 
     override fun onChanged(t: ArticleResponse?) {
         isLoading= false
@@ -67,6 +83,9 @@ class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
                 if (t?.articles?.size!! == 0) {
                     pageNumber--
                     Toast.makeText(this@MainActivity, getString(R.string.no_more_items_found), Toast.LENGTH_LONG).show()
+                }
+                else{
+                    (recyclerView.adapter as ArticleAdapter).addItems(t.articles!!)
                 }
                 progress.visibility = View.GONE
 
