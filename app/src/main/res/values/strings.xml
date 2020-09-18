@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Jet2Travel</string>
+    <string name="no_article">No article found</string>
+
+    <string name="no_more_items_found">No more items found</string>
+    <string name="error_msg">Error fetching response</string>
+
 </resources>

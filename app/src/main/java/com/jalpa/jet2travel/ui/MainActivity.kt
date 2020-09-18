@@ -10,20 +10,33 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.RecyclerView
 import com.jalpa.jet2travel.R
+import com.jalpa.jet2travel.network.NetworkManager
 import com.jalpa.jet2travel.viewmodel.ArticleResponse
 import com.jalpa.jet2travel.viewmodel.ArticleViewModel
 
 class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
     private var isLoading: Boolean = false
-
     private var pageNumber: Int = 0
-
     private lateinit var progress: ProgressBar
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        progress = findViewById(R.id.progressBarLoading)
+        recyclerView = findViewById(R.id.grid_view)
+        recyclerView.apply{
+            itemAnimator = DefaultItemAnimator()
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                }
+            })
+        }
 
         loadMore()
 
@@ -42,7 +55,6 @@ class MainActivity : AppCompatActivity() ,Observer<ArticleResponse>{
         if (t?.error == null) {
             if (pageNumber == 1) {
                 if (t?.articles?.size!! > 0) {
-
                     findViewById<View>(R.id.empty_msg).visibility = View.GONE
                 } else {
                     pageNumber--
